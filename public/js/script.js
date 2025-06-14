@@ -133,19 +133,18 @@ window.addEventListener('DOMContentLoaded', function() {
     let form = document.querySelector('.main-form'),
         input = form.getElementsByTagName('input');
 
-    console.log(form);
-    // fetch()
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         let formData = new FormData(form);
-        let obj = {};
-            formData.forEach(function(value, key) {
-                obj[key] = value;
-            });
+        // let obj = {};
+        //     formData.forEach(function(value, key) {
+        //         obj[key] = value;
+        //     });
             // проблема, что форма не берет input'ы
-        console.log(formData);    
+        console.log(formData);
+        console.log(Object.fromEntries(formData));   
 
-        fetch('https//api.example.com/data', {
+        fetch('https://jsonplaceholder.typicode.com/todos/1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -171,19 +170,13 @@ window.addEventListener('DOMContentLoaded', function() {
     let formBottom = document.getElementById('form'),
         inputBottom = formBottom.getElementsByTagName('input');
 
-    console.log(formBottom);
-    // fetch()
+    console.log(formBottom);   
     formBottom.addEventListener('submit', function(event) {
         event.preventDefault();
         let formData = new FormData(formBottom);
-        let obj = {};
-            formData.forEach(function(value, key) {
-                obj[key] = value;
-            });
-            // проблема, что форма не берет input'ы
-        console.log(formData);    
+        console.log(Object.fromEntries(formData));  
 
-        fetch('https//api.example.com/data', {
+        fetch('https://jsonplaceholder.typicode.com/todos/1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -204,95 +197,39 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     })
 
+    // SLIDER
+    let slides = document.querySelectorAll('.slider-item'),
+        prev = document.querySelector('.prev'),
+        next = document.querySelector('.next'),
+        dotsWrap = document.querySelector('.slider-dots'),
+        dots = document.querySelectorAll('.dot'),
+        slideIndex = 3; // параметр текущего слайда
 
-    // Form создаем объект с 3 свойствами-сообщениями. Он будет реализовывать реакцию программы на отправку формы пользователем
+        showSlides(slideIndex);
+    function showSlides(n) {
+        slides.forEach((item) => item.style.display = 'none'); // прячем все слайды
+        // for (let i = 0; i < slides.length; i++) {
+        //     slides[i].style.display = 'none';
+        // } // другой - более старый вариант
+        dots.forEach((item) => item.classList.remove('dot-active')); // все точки деактивируем (убираем класс active)
 
-    // let message = {
-    //     loading: 'Загрузка', // это будет выводиться во время загрузки формы
-    //     succes: 'Спасибо! Скоро мы с вами свяжемся!', // это будет выводится при удачной отправке формы
-    //     failure: 'Что-то пошло не так...' // в случае неудачной отправке
-    // };
-    // let form = document.querySelector('.main-form'),
-    //     input = form.getElementsByTagName('input'),
-    //     statusMessage = document.createElement('div'); 
-
-    // // добавляем класс к только что созданному элементу, стили которого заранее прописаны в style.css
-    // statusMessage.classList.add('status');
-
-    // // далее навешиваем обработчик событий на ФОРМУ ('main-form') отправки, а не на кнопку. Нам нужно отслеживать когда форма отправляется
-    // form.addEventListener('submit', function(event) {
-    //     event.defaultPrevented();
-    //     form.appendChild(statusMessage);
-
-    //     // создаем AJAX запрос
-    //     let request = new XMLHttpRequest();
-    //     request.open('POST', 'server.php');
-    //     request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    //     // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    //     let formData = new FormData(form);
-    //     // request.send(formData);
-
-    //     // этот участок кода добавили после очистки форм, для того чтобы преобразовать данные FormData в JSON формат
-    //         let obj = {};
-    //         formData.forEach(function(value, key) {
-    //             obj[key] = value;
-    //         });
-
-    //         let json = JSON.stringify(obj);
-
-    //         request.send(json);
-
-    //         request.addEventListener('readystatechange', function() {
-    //             if (request.readyState < 4) {
-    //                 statusMessage.innerHTML = message.loading;
-    //             } else if (request.readyState === 4 && request.status == 200) {
-    //                 statusMessage.innerHTML = message.succes;
-    //             } else {
-    //                 statusMessage.innerHTML = message.failure;
-    //             }
-    //         });
-
-    //         for (let i = 0; i<input.length; i++) {
-    //             input[i].value = '';
-    //         }                 
-    //     });
-
-    // let formBottom = document.getElementById('form'),
-    //     inputBottom = formBottom.getElementsByTagName('input');
-        
-    // formBottom.addEventListener('submit', function(event) {
-    //     event.defaultPrevented();
-    //     formBottom.appendChild(statusMessage);   
-
-    //     let request = new XMLHttpRequest();
-    //     request.open('POST', 'server.php');
-    //     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    //     let formData = new FormData(formBottom);
-    //     request.send(formData);
-
-    //     let obj = {};
-    //     formData.forEach(function(value, key) {
-    //         obj[key] = value;
-    //     });
-
-    //     let json = JSON.stringify(obj);
-
-    //     request.send(json);
-
-    //     request.addEventListener('readystatechange', function() {
-    //         if (request.readyState < 4) {
-    //             statusMessage.innerHTML = message.loading;
-    //         } else if (request.readyState = 4 && request.status == 200) {
-    //             statusMessage.innerHTML = message.succes;
-    //         } else {
-    //             statusMessage.innerHTML = message.failure;
-    //         }
-    //     });
-
-    //     for (let i = 0; i<inputBottom.length; i++) {
-    //         inputBottom[i].value = '';
-    //     }
-    // })
+        slides[slideIndex - 1].style.display = 'block';
+        dots[slideIndex - 1].classList.add('dot-active');
+    }
+    next.addEventListener('click', function() {
+        if (slideIndex < 4) {
+        slideIndex = slideIndex + 1;
+        showSlides(slideIndex);
+        } else {slideIndex = 1;
+            showSlides(slideIndex);
+        };
+    })
+    prev.addEventListener('click', function() {
+        if (slideIndex > 1) {
+        slideIndex = slideIndex - 1;
+        showSlides(slideIndex);
+        } else {slideIndex = 4;
+            showSlides(slideIndex);
+        };
+    })
 });
