@@ -34,7 +34,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     // timer . Выдаст массив total, часы, минуты и секунды
-    let deadline = '2025-06-10';
+    let deadline = '2025-07-08';
     function getTimeRemaining(endTime) {
         let t = Date.parse(endTime) - Date.parse(new Date()), // разница между датами дедлайна и сегодняшней
             seconds = Math.floor((t/1000) % 60),
@@ -207,6 +207,15 @@ window.addEventListener('DOMContentLoaded', function() {
 
         showSlides(slideIndex);
     function showSlides(n) {
+
+        if (n > slides.length) {
+            slideIndex = 1;
+        };
+        if (n < 1) {
+            slideIndex = slides.length;
+        };
+
+
         slides.forEach((item) => item.style.display = 'none'); // прячем все слайды
         // for (let i = 0; i < slides.length; i++) {
         //     slides[i].style.display = 'none';
@@ -216,20 +225,111 @@ window.addEventListener('DOMContentLoaded', function() {
         slides[slideIndex - 1].style.display = 'block';
         dots[slideIndex - 1].classList.add('dot-active');
     }
-    next.addEventListener('click', function() {
-        if (slideIndex < 4) {
-        slideIndex = slideIndex + 1;
-        showSlides(slideIndex);
-        } else {slideIndex = 1;
-            showSlides(slideIndex);
-        };
-    })
+
+    // мой Вариант работы кнопок слайдера
+    // next.addEventListener('click', function() {
+    //     if (slideIndex < 4) {
+    //     slideIndex = slideIndex + 1;
+    //     showSlides(slideIndex);
+    //     } else {slideIndex = 1;
+    //         showSlides(slideIndex);
+    //     };
+    // })
+    // prev.addEventListener('click', function() {
+    //     if (slideIndex > 1) {
+    //     slideIndex = slideIndex - 1;
+    //     showSlides(slideIndex);
+    //     } else {slideIndex = 4;
+    //         showSlides(slideIndex);
+    //     };
+    // })
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    };
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    };
+    
     prev.addEventListener('click', function() {
-        if (slideIndex > 1) {
-        slideIndex = slideIndex - 1;
-        showSlides(slideIndex);
-        } else {slideIndex = 4;
-            showSlides(slideIndex);
-        };
+        plusSlides(-1);
+    });
+    next.addEventListener('click', function() {
+        plusSlides(1);
+    });
+
+    // ниже пишем функционал для точек. Используем делегирование событий, для чего дописываем в аргумент функции - event
+    dotsWrap.addEventListener('click', function(event) {
+        // пишем код который переберет точки и найдет ту, на которую кликнули
+        for (let i = 0; i < dots.length + 1; i++) {
+            // испотзуем делегирование событий
+            if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
+                currentSlide(i);
+            }
+        }
+    });
+
+    //КАЛЬКУЛЯТОР мой вариант
+    let totalField = document.querySelector('#total'),
+        days = document.querySelectorAll('.counter-block-input')[1],
+        mans = document.querySelectorAll('.counter-block-input')[0],
+        selectBase = document.querySelector('#select'),
+        tarif = 4000;
+
+    selectBase.addEventListener('change', function() {
+        calcu();
     })
+    days.addEventListener('input', function() {
+        calcu();
+    });
+    mans.addEventListener('input', function() {
+        calcu();
+    });
+
+    function calcu() {
+        let sum = +days.value * +mans.value * +selectBase.value * tarif;
+        totalField.textContent = sum;
+    };
+
+    // КАЛЬКУЛЯТОР вариант Ивана
+    // let persons = document.querySelectorAll('.counter-block-input')[0],
+    //         restDays = document.querySelectorAll('.counter-block-input')[1],
+    //         place = document.getElementById('select'),
+    //         totalValue = document.getElementById('total'),
+    //         personsSum = 0,
+    //         daysSum = 0,
+    //         total = 0;
+
+    //     totalValue.innerHTML = 0;
+
+    //     persons.addEventListener('change', function() {
+    //         personsSum = +this.value;
+    //         total = (daysSum + personsSum)*4000;
+
+    //         if(restDays.value == '') {
+    //             totalValue.innerHTML = 0;
+    //         } else {
+    //             totalValue.innerHTML = total;
+    //         }
+    //     });
+
+    //     restDays.addEventListener('change', function() {
+    //         daysSum = +this.value;
+    //         total = (daysSum + personsSum)*4000;
+
+    //         if(persons.value == '') {
+    //             totalValue.innerHTML = 0;
+    //         } else {
+    //             totalValue.innerHTML = total;
+    //         }
+    //     });
+
+    //     place.addEventListener('change', function() {
+    //         if (restDays.value == '' || persons.value == '') {
+    //             totalValue.innerHTML = 0;
+    //         } else {
+    //             let a = total;
+    //             totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+    //         }
+    //     });
 });
